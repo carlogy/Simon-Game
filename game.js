@@ -31,39 +31,38 @@ $(".btn").click(function() {
     playSound(userChosenColor);
     console.log(userClickedPattern);
     animatePress(userChosenColor);
-    checkAnswer(userClickedPattern.length - 1);
+    checkAnswer(userClickedPattern.length-1);
 });
 
 // validates wether users selected pattern matches computer's selected
 function checkAnswer(currentLevel) {
     if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
-        console.log("succcess");
-
-        if (userClickedPattern.length === gamePattern.length) {
-            setTimeout(function () {
-                nextSequence();
-            }, 1000);
-        }
-        
+       if (userClickedPattern.length === gamePattern.length) {
+         setTimeout(function () {
+            nextSequence();
+         }, 1000);
+        }        
     } else {
         // plays a sound if user selected doesn't match computer, flashes bg red and updates title
-        var wrong = "wrong"
-        playSound(wrong);
-        $("body").addClass("game-over");
+      playSound("wrong");
+      $("body").addClass("game-over");
+      $('#level-title').text("Game Over, Press Any Key to Restart");
 
-        setTimeout(function() {
-            $("body").removeClass("game-over");
-        },200);
-        $('#level-title').text("Game Over, Press Any Key to Restart");
-        console.log()
-    }
+      setTimeout(function() {
+         $("body").removeClass("game-over");
+        }, 200);
+
+        
+
+        startOver();    
+   }
 }
-
-
-
 
 // Generates a random number between 1 and 3 assigns to randomChosenColor and appends gamePattern array with that number
 function nextSequence() {
+    userClickedPattern = [];
+    level++
+    $("#level-title").text("Level " + level);
     var randomNumber = Math.floor(Math.random() * 4);
     
     // Assigns the randome number in nextSequence function to a color
@@ -75,11 +74,7 @@ function nextSequence() {
 
     $("#" + randomChosenColor).fadeIn(100).fadeOut(100).fadeIn(100);
     
-    playSound(randomChosenColor);
-
-    level++;
-
-    $("#level-title").text("Level " + level);
+    playSound(randomChosenColor);   
 }
 
 
@@ -95,6 +90,13 @@ function animatePress(currentColor) {
         $("#" + currentColor).removeClass("pressed");
     }, 100);
     
+}
+
+// resets values to restart the game
+function startOver () {
+    level = 0;
+    gamePattern = [];
+    hasStarted = false;
 }
 
 
