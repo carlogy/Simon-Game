@@ -9,6 +9,8 @@ var userClickedPattern = [];
 
 var level = 0;
 var hasStarted = false;
+
+// checks for keypress to start the game
 $(document).keypress(function() {
     if (!hasStarted) {
         $('#level-title').text("Level " + level);
@@ -29,14 +31,31 @@ $(".btn").click(function() {
     playSound(userChosenColor);
     console.log(userClickedPattern);
     animatePress(userChosenColor);
+    checkAnswer(userClickedPattern.length - 1);
 });
+
+// validates wether users selected pattern matches computer's selected
+function checkAnswer(currentLevel) {
+    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+        console.log("succcess");
+
+        if (userClickedPattern.length === gamePattern.length) {
+            setTimeout(function () {
+                nextSequence();
+            }, 1000);
+        }
+        
+    } else {
+        console.log("wrong")
+    }
+}
 
 
 
 
 // Generates a random number between 1 and 3 assigns to randomChosenColor and appends gamePattern array with that number
 function nextSequence() {
-    var randomNumber = Math.floor(Math.random() * 4 );
+    var randomNumber = Math.floor(Math.random() * 4);
     
     // Assigns the randome number in nextSequence function to a color
     var randomChosenColor = buttonColors[randomNumber];
@@ -45,7 +64,7 @@ function nextSequence() {
     // appends the gamePattern arraty with the last chosen number
     gamePattern.push(randomChosenColor);  
 
-    $("#" + randomChosenColor).fadein(100).fadeout(100).fadein(100);
+    $("#" + randomChosenColor).fadeIn(100).fadeOut(100).fadeIn(100);
     
     playSound(randomChosenColor);
 
@@ -68,6 +87,8 @@ function animatePress(currentColor) {
     }, 100);
     
 }
+
+
 
 
 
